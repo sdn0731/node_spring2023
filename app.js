@@ -6,11 +6,11 @@ app.use('/static', express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-const mongoDB = 'mongodb+srv://sarah:LLm0iVxIaJocO7nL@cluster0.hrmd2q7.mongodb.net/?retryWrites=true&w=majority'
+const mongoDB = 'mongodb+srv://sdn731:C4MP7vcf7C54OF5T@cluster0.hrmd2q7.mongodb.net/?retryWrites=true&w=majority'
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;
-db.on('error', console.error.bind(console, "MongoDB connection error: "))
+db.on('error', console.error.bind(console, "MongoDb connection error: "))
 
 app.get('/', function(req, res){
     res.render('todo.ejs');
