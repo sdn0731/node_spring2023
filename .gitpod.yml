@@ -4,7 +4,8 @@
 
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
+ports:
+    port: 3000
+
 tasks:
   - init: npm install
-
-

@@ -5,8 +5,8 @@ var app = express();
 app.use('/static', express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
-const mongoDB = 'mongodb+srv://sdn731:C4MP7vcf7C54OF5T@cluster0.hrmd2q7.mongodb.net/?retryWrites=true&w=majority'
+const Todo = require('./models/todo.model');
+const mongoDB = 'mongodb+srv://sdn731:a8trXXXxcZGqsFwD@cluster0.hrmd2q7.mongodb.net/?retryWrites=true&w=majority'
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;
@@ -17,7 +17,17 @@ app.get('/', function(req, res){
 })
 
 app.post('/', (req, res) => {
-    console.log(req.body.content)
+    let newTodo = new Todo({
+        todo: req.body.content,
+        done: false
+    })
+    newTodo.save(function(err, todo){
+        if(err){
+            res.json({"Error: ": err})
+        } else {
+            res.json({"Status: ": "Successful", "ObjectId": todo.id})
+        }
+    })
 })
 
 app.listen(3000, function(){
