@@ -1,9 +1,10 @@
 var express = require('express');
+const res = require('express/lib/response');
 var mongoose = require('mongoose')
 var app = express();
 
 app.use('/static', express.static("public"));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 app.set("view engine", "ejs");
 const Todo = require('./models/todo.model');
 const mongoDB = 'mongodb+srv://sdn731:a8trXXXxcZGqsFwD@cluster0.hrmd2q7.mongodb.net/?retryWrites=true&w=majority'
@@ -16,11 +17,12 @@ app.get('/', function(req, res){
     res.render('todo.ejs');
 })
 
+// Creates item in DB
 app.post('/', (req, res) => {
-    let newTodo = new Todo({
-        todo: req.body.content,
-        done: false
-    })
+   let newTodo = new Todo({
+    todo: req.body.content,
+    done: false
+   })
     newTodo.save(function(err, todo){
         if(err){
             res.json({"Error: ": err})
@@ -28,6 +30,56 @@ app.post('/', (req, res) => {
             res.json({"Status: ": "Successful", "ObjectId": todo.id})
         }
     })
+})
+// Modifies item in DB
+app.put('/', (req, res) => {
+    let id = req.body.check;
+    let err = {}
+    if(typeof id === "string"){
+        Todo.updateOne({_id: id}, {done: true}, function(error){
+            if(error){
+                err = error
+            }
+        })
+    } else if (typeof id === "object") {
+        id.forEach( ID => {
+            Todo.updateOne({_id: ID}, {done: true}, function(error){
+                if(error){
+                    err = error
+                }
+            })
+        })
+    }
+    if(err){
+        res.json({"Error: ": err})
+    } else {
+        res.json({"Status: ": "Successful"})
+    }
+})
+
+app.delete('/', (req, res) => {
+    let id = req.body.check;
+    let err = {}
+    if(typeof id === "string"){
+        Todo.deleteOne({_id: id}, function(error){
+            if(error){
+                err = error
+            }
+        })
+    } else if (typeof id === "object") {
+        id.forEach( ID => {
+            Todo.deleteOne({_id: ID}, function(error){
+                if(error){
+                    err = error
+                }
+            })
+        })
+    }
+    if(err){
+        res.json({"Error: ": err})
+    } else {
+        res.json({"Status: ": "Successful"})
+    }
 })
 
 app.listen(3000, function(){
