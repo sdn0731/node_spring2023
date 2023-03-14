@@ -1,10 +1,13 @@
 var express = require('express');
-const res = require('express/lib/response');
 var mongoose = require('mongoose')
 var app = express();
+const axios = require('axios').default;
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use('/static', express.static("public"));
-app.use(express.urlencoded({ extended: true }))
 app.set("view engine", "ejs");
 const Todo = require('./models/todo.model');
 const mongoDB = 'mongodb+srv://sdn731:a8trXXXxcZGqsFwD@cluster0.hrmd2q7.mongodb.net/?retryWrites=true&w=majority'
@@ -25,7 +28,7 @@ app.get('/', function(req, res){
 })
 
 // Creates item in DB
-app.post('/', (req, res) => {
+app.post('/create', (req, res) => {
    let newTodo = new Todo({
     todo: req.body.content,
     done: false
@@ -39,10 +42,9 @@ app.post('/', (req, res) => {
     })
 })
 // Modifies item in DB
-app.put('/', (req, res) => {
+app.put('/done', (req, res) => {
     let id = req.body.id;
-    let err = {}
-    console.log(req.body)
+    let err = null
     if(typeof id === "string"){
         Todo.updateOne({_id: id}, {done: true}, function(error){
             if(error){
@@ -52,7 +54,7 @@ app.put('/', (req, res) => {
         })
     } else if (typeof id === "object") {
         id.forEach( ID => {
-            Todo.updateOne({_id: ID}, {done: true}, function(error){
+            Todo.updateOne({_id: id}, {done: true}, function(error){
                 if(error){
                     console.log(error)
                     err = error
@@ -63,13 +65,13 @@ app.put('/', (req, res) => {
     if(err){
         res.json({"Error: ": err})
     } else {
-        res.json({"Status: ": "Successful"})
+        res.redirect('/');
     }
 })
 
-app.delete('/', (req, res) => {
-    let id = req.body.check;
-    let err = {}
+app.delete('/delete/:id', (req, res) => {
+    let id = req.params.id;
+    let err;
     if(typeof id === "string"){
         Todo.deleteOne({_id: id}, function(error){
             if(error){
