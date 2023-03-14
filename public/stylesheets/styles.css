@@ -22,6 +22,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: visible;
+    
 }
 
 .todo {
@@ -31,6 +33,7 @@ body {
 .todo-container h2 {
     padding: 10px;
     font-size: 2em;
+    text-align: center;
 }
 
 .todo-header input {
@@ -100,4 +103,11 @@ body {
 
 .todo-list-item .strike-through{
     text-decoration: line-through;
+}
+
+.todo-full-list{
+    
+}
+.comic{
+    
 }

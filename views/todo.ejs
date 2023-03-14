@@ -36,42 +36,46 @@
     </script>
 </head>
 <body>
-    <h2>
-        <%= comicData.safe_title %>
-    </h2>
-    <img src="<%= comicData.img %>" alt="<%= comicData.alt %>" width="500px" height="500px" />
     <div class="todo-container">
-        <h2>
-            To-Do Items
-        </h2>
-        <div class="todo">
-            <form action="/create" method="POST" class="todo-header">
-                <input type="text" name="content" />
-                <button type="submit">
-                    <i class="fa fa-plus"></i>
-                </button>
-            </form>
-            <ul class="todo-list">
-                <% todoList.forEach(function(todo){ %> 
-                    <li class="todo-list-item">
-                        <% if(todo.done) { %>
-                            <div class="todo-list-item-name strike-through">
-                                <%= todo.todo %>
-                            </div>
-                        <% } else { %>
-                            <div class="todo-list-item-name">
-                                <%= todo.todo %>
-                            </div>
-                        <% } %>
-                        <button data-todoId="<%= todo._id %>" class="remove" onClick="done(this)">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                        <button data-todoId="<%= todo._id %>" class="edit" onClick="deleteItem(this)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </li>
-                <% }) %>
-            </ul>
+        <div class="todo-full-list">
+            <h2>
+                To-Do Items
+            </h2>
+            <div class="todo">
+                <form action="/create" method="POST" class="todo-header">
+                    <input type="text" name="content" />
+                    <button type="submit">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </form>
+                <ul class="todo-list">
+                    <% todoList.forEach(function(todo){ %> 
+                        <li class="todo-list-item">
+                            <% if(todo.done) { %>
+                                <div class="todo-list-item-name strike-through">
+                                    <%= todo.todo %>
+                                </div>
+                            <% } else { %>
+                                <div class="todo-list-item-name">
+                                    <%= todo.todo %>
+                                </div>
+                            <% } %>
+                            <button data-todoId="<%= todo._id %>" class="remove" onClick="done(this)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button data-todoId="<%= todo._id %>" class="edit" onClick="deleteItem(this)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+        <div class="comic">
+            <h2>
+                <%= comicData.safe_title %>
+            </h2>
+            <img class="center" src="<%= comicData.img %>" alt="<%= comicData.alt %>" width="500px" height="500px" />
         </div>
     </div>
 </body>
