@@ -1,3 +1,4 @@
+// Establish Requirements
 var express = require('express');
 var mongoose = require('mongoose')
 var app = express();
@@ -16,6 +17,7 @@ mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, "MongoDb connection error: "))
 
+// Create Todo List Method
 app.get('/', function(req, res){
     axios.get('https://xkcd.com/info.0.json').then(function(response){
         Todo.find(function(err, todo){
@@ -31,7 +33,7 @@ app.get('/', function(req, res){
     })
 })
 
-// Creates item in DB
+// Create Todo List Item
 app.post('/create', (req, res) => {
    let newTodo = new Todo({
     todo: req.body.content,
@@ -45,7 +47,7 @@ app.post('/create', (req, res) => {
         }
     })
 })
-// Modifies item in DB
+// Modify Todo List Item
 app.put('/done', (req, res) => {
     let id = req.body.id;
     let err = null
@@ -73,6 +75,7 @@ app.put('/done', (req, res) => {
     }
 })
 
+// Delete Todo List Item
 app.delete('/delete/:id', (req, res) => {
     let id = req.params.id;
     let err;
@@ -98,6 +101,7 @@ app.delete('/delete/:id', (req, res) => {
     }
 })
 
+// Identify Port (3000)
 app.listen(3000, function(){
     console.log('App listening on port 3000')
 })

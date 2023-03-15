@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <head>
+    <!-- Webpage Title -->
     <title>
         Todo Mongo Example
     </title>
+    <!-- Link Stylesheets -->
     <link rel="stylesheet" href="/static/stylesheets/styles.css" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
     <!-- <link href="https://use.fontawesome.com/release.v5.8.2/css/all.css" rel="stylesheet" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
+        // Modify Todo List Item
         function done(todoTag){
             const _id = todoTag.getAttribute("data-todoId");
             fetch('/done', {
@@ -21,6 +24,7 @@
                 console.error('Error:', error);
             });
         }
+        // Delete Todo List Item
         function deleteItem(todoTag){
             const _id = todoTag.getAttribute("data-todoId");
             fetch(`/delete/${_id}`, {
@@ -36,18 +40,24 @@
     </script>
 </head>
 <body>
+    <!-- Create Todo List Container -->
     <div class="todo-container">
         <div class="todo-full-list">
+            <!-- Todo List Title -->
             <h2>
                 To-Do Items
             </h2>
             <div class="todo">
+                <!-- Todo List Form -->
                 <form action="/create" method="POST" class="todo-header">
+                    <!-- Input Todo List item -->
                     <input type="text" name="content" />
+                    <!-- Add Todo List Item -->
                     <button type="submit">
                         <i class="fa fa-plus"></i>
                     </button>
                 </form>
+                <!-- Display Todo List Items -->
                 <ul class="todo-list">
                     <% todoList.forEach(function(todo){ %> 
                         <li class="todo-list-item">
@@ -60,9 +70,11 @@
                                     <%= todo.todo %>
                                 </div>
                             <% } %>
+                            <!-- Modify Todo List Item Button -->
                             <button data-todoId="<%= todo._id %>" class="remove" onClick="done(this)">
                                 <i class="fa fa-pencil"></i>
                             </button>
+                            <!-- Delete Todo List Item Button -->
                             <button data-todoId="<%= todo._id %>" class="edit" onClick="deleteItem(this)">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -71,11 +83,14 @@
                 </ul>
             </div>
         </div>
+        <!-- Display Comic -->
         <div class="comic">
+            <!-- Display Comic Title -->
             <h2>
                 <%= comicData.safe_title %>
             </h2>
-            <img class="center" src="<%= comicData.img %>" alt="<%= comicData.alt %>" width="500px" height="500px" />
+            <!-- Display Comic Image -->
+            <img src="<%= comicData.img %>" alt="<%= comicData.alt %>" width="250px" height="250px" />
         </div>
     </div>
 </body>
